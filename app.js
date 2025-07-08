@@ -88,7 +88,14 @@ Silakan ajukan pertanyaan pertama Anda!`;
                 const text = userMessage.substring(stickerPrefix.length).trim();
                 let imageBuffer;
 
-                const image = await Jimp.read(Buffer.from(media.data, 'base64'));
+                let image;
+            try {
+                 image = await Jimp.read(Buffer.from(media.data, 'base64'));
+                } catch (err) {
+                console.error(`Gagal membaca gambar dari [${chatId}]:`, err.message);
+                await message.reply('⚠️ Gagal memproses gambar. Pastikan Anda mengirim file gambar yang valid.');
+               return;
+               }
 
                 if (text) {
                     console.log(`Menambahkan teks "${text}" ke stiker.`);
